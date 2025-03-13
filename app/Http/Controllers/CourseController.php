@@ -19,7 +19,7 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        return view('courses.courses');
     }
 
     /**
@@ -27,7 +27,14 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+        ]);
+
+        $course = Course::create($request->all());
+
+        return response()->json(['message' => 'Course added successfully!', 'course' => $course]);
     }
 
     /**
@@ -59,6 +66,9 @@ class CourseController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+        $course->delete();
+
+        return response()->json(['message' => 'Course deleted successfully!']);
     }
 }
